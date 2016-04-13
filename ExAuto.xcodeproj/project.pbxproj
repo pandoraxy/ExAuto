@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		92AD8E811CBB40C900C6EF14 /* ExAuto.h in Headers */ = {isa = PBXBuildFile; fileRef = 92AD8E801CBB40C900C6EF14 /* ExAuto.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		92AD8E881CBB40C900C6EF14 /* ExAuto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92AD8E7D1CBB40C900C6EF14 /* ExAuto.framework */; };
 		92AD8E8D1CBB40C900C6EF14 /* ExAutoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92AD8E8C1CBB40C900C6EF14 /* ExAutoTests.swift */; };
+		AAD7762C1CBDF280008147C6 /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD7762B1CBDF280008147C6 /* Demo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,11 +24,11 @@
 
 /* Begin PBXFileReference section */
 		92AD8E7D1CBB40C900C6EF14 /* ExAuto.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ExAuto.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		92AD8E801CBB40C900C6EF14 /* ExAuto.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExAuto.h; sourceTree = "<group>"; };
 		92AD8E821CBB40C900C6EF14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		92AD8E871CBB40C900C6EF14 /* ExAutoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExAutoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		92AD8E8C1CBB40C900C6EF14 /* ExAutoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExAutoTests.swift; sourceTree = "<group>"; };
 		92AD8E8E1CBB40C900C6EF14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AAD7762B1CBDF280008147C6 /* Demo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,8 +71,8 @@
 		92AD8E7F1CBB40C900C6EF14 /* ExAuto */ = {
 			isa = PBXGroup;
 			children = (
-				92AD8E801CBB40C900C6EF14 /* ExAuto.h */,
 				92AD8E821CBB40C900C6EF14 /* Info.plist */,
+				AAD7762B1CBDF280008147C6 /* Demo.swift */,
 			);
 			path = ExAuto;
 			sourceTree = "<group>";
@@ -93,7 +93,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92AD8E811CBB40C900C6EF14 /* ExAuto.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,6 +193,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAD7762C1CBDF280008147C6 /* Demo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +310,7 @@
 		92AD8E921CBB40C900C6EF14 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -320,12 +321,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.appstudio.ExAuto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		92AD8E931CBB40C900C6EF14 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -378,6 +381,7 @@
 				92AD8E931CBB40C900C6EF14 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		92AD8E941CBB40C900C6EF14 /* Build configuration list for PBXNativeTarget "ExAutoTests" */ = {
 			isa = XCConfigurationList;
@@ -386,6 +390,7 @@
 				92AD8E961CBB40C900C6EF14 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
