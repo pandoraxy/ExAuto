@@ -10,6 +10,8 @@
 		92AD8E881CBB40C900C6EF14 /* ExAuto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92AD8E7D1CBB40C900C6EF14 /* ExAuto.framework */; };
 		92AD8E8D1CBB40C900C6EF14 /* ExAutoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92AD8E8C1CBB40C900C6EF14 /* ExAutoTests.swift */; };
 		AAD7762C1CBDF280008147C6 /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD7762B1CBDF280008147C6 /* Demo.swift */; };
+		F4388D3D1CC7333B002D8760 /* ExFocusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4388D3C1CC7333B002D8760 /* ExFocusManager.swift */; };
+		F4BF29101CC77679005A1C4E /* ExControlCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BF290F1CC77679005A1C4E /* ExControlCenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +31,8 @@
 		92AD8E8C1CBB40C900C6EF14 /* ExAutoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExAutoTests.swift; sourceTree = "<group>"; };
 		92AD8E8E1CBB40C900C6EF14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AAD7762B1CBDF280008147C6 /* Demo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
+		F4388D3C1CC7333B002D8760 /* ExFocusManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExFocusManager.swift; sourceTree = "<group>"; };
+		F4BF290F1CC77679005A1C4E /* ExControlCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExControlCenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,8 +75,10 @@
 		92AD8E7F1CBB40C900C6EF14 /* ExAuto */ = {
 			isa = PBXGroup;
 			children = (
+				F4388D3C1CC7333B002D8760 /* ExFocusManager.swift */,
 				92AD8E821CBB40C900C6EF14 /* Info.plist */,
 				AAD7762B1CBDF280008147C6 /* Demo.swift */,
+				F4BF290F1CC77679005A1C4E /* ExControlCenter.swift */,
 			);
 			path = ExAuto;
 			sourceTree = "<group>";
@@ -194,6 +200,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AAD7762C1CBDF280008147C6 /* Demo.swift in Sources */,
+				F4BF29101CC77679005A1C4E /* ExControlCenter.swift in Sources */,
+				F4388D3D1CC7333B002D8760 /* ExFocusManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +242,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
@@ -257,6 +266,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -283,6 +293,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
@@ -299,6 +310,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -311,6 +323,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -320,7 +333,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.appstudio.ExAuto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d575eeb5-3c22-4125-a09b-0f273ffda606";
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -330,6 +343,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -339,7 +353,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.appstudio.ExAuto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d575eeb5-3c22-4125-a09b-0f273ffda606";
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
