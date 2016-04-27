@@ -69,7 +69,7 @@ public class ExControlCenter {
     private static var singleton:ExControlCenter?
     
         /// 焦点控制
-    lazy weak private var focusManager = ExFocusManager.init()
+    lazy private var focusManager = ExFocusManager.init()
 
     
     //MARK:- 公有变量
@@ -85,7 +85,7 @@ public class ExControlCenter {
      */
     public var focusView:UIView?{
         get {
-            return focusManager?.currentItem
+            return focusManager.currentItem
         }
     }
     //MARK: BLE:探测到的可用外设列表
@@ -129,7 +129,7 @@ public class ExControlCenter {
      */
     public func performUp(){
         if !focusHidden {
-            focusManager?.lookup_Up()
+            focusManager.lookup_Up()
         }
     }
     /**
@@ -137,7 +137,7 @@ public class ExControlCenter {
      */
     public func performLeft(){
         if !focusHidden {
-            focusManager?.lookup_Left()
+            focusManager.lookup_Left()
         }
     }
     /**
@@ -145,7 +145,7 @@ public class ExControlCenter {
      */
     public func performRight(){
         if !focusHidden {
-            focusManager?.lookup_Right()
+            focusManager.lookup_Right()
         }
     }
     /**
@@ -153,7 +153,7 @@ public class ExControlCenter {
      */
     public func performDown(){
         if !focusHidden {
-            focusManager?.lookup_Down()
+            focusManager.lookup_Down()
         }
     }
     /**
@@ -184,7 +184,7 @@ public class ExControlCenter {
     public func setFocusForView(view:UIView?){
         
         if view != nil && !focusHidden{
-            focusManager?.setFocusForView(view)
+            focusManager.setFocusForView(view)
         }
     }
     /**
