@@ -10,14 +10,12 @@ import UIKit
 
 let btnCornerRadius:CGFloat = 8 //这个成员将来要删掉，临时加上它
 
-public class ExFocusManager {
+class ExFocusManager {
     
     /**
      焦点视图(私有常量)
      */
     private let focusView:UIView = UIView.init()
-        /// 需要显示焦点的视图控制器，在需要用焦点的时候赋值
-    public weak var viewDelegate:UIView?
     /**
      当前选中的焦点()
      */
@@ -43,8 +41,9 @@ public class ExFocusManager {
      - parameter view: 选择了的view
      */
     func setFocusForView(view:UIView?) {
-        if viewDelegate != nil {//当前有整体视图
-            viewDelegate!.bringSubviewToFront(focusView)
+        let delegateView = ExControlCenter.sharedInstance()?.displayControlDelegate?.secondScreenView
+        if delegateView != nil {//当前有整体视图
+            delegateView!.bringSubviewToFront(focusView)
             if currentItem != view && currentItem != nil && view != nil {//确实选了另外一个
                 let originalFrame = currentItem!.frame
                 let finalFrame = view!.frame
@@ -73,7 +72,7 @@ public class ExFocusManager {
      向上查找
      */
      func lookup_Up() {
-        let items = viewDelegate?.subviews
+        let items = ExControlCenter.sharedInstance()?.displayControlDelegate?.secondScreenView?.subviews
         if nil != items {//当前有选中项
             //搜索策略：首先查找垂直最短间距；如果最短间距有多个，则选择水平最短间距那个控件作为查找对象
             //以后的向右、向左、向下策略相同，相应方向会有变化
@@ -111,7 +110,8 @@ public class ExFocusManager {
      标注同向上
      */
     func lookup_Left() {
-        let items = viewDelegate?.subviews
+        let items = ExControlCenter.sharedInstance()?.displayControlDelegate?.secondScreenView?.subviews
+
         if items != nil {
             var minVDistance = CGFloat.max
             var minHDistance = CGFloat.max
@@ -147,7 +147,8 @@ public class ExFocusManager {
      标注同向上
      */
     func lookup_Right() {
-        let items = viewDelegate?.subviews
+        let items = ExControlCenter.sharedInstance()?.displayControlDelegate?.secondScreenView?.subviews
+
         if items != nil {
             var minVDistance = CGFloat.max
             var minHDistance = CGFloat.max
@@ -183,7 +184,7 @@ public class ExFocusManager {
      标注同向上
      */
     func lookup_Down() {
-        let items = viewDelegate?.subviews
+        let items = ExControlCenter.sharedInstance()?.displayControlDelegate?.secondScreenView?.subviews
         if items != nil {
             var minVDistance = CGFloat.max
             var minHDistance = CGFloat.max
