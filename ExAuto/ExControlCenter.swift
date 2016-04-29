@@ -8,12 +8,11 @@
 
 import UIKit
 
-public let notiName = "Notification"
-public let userInfoKey = "order"
 /// 显示层代理需要遵循的协议
 public protocol ExDisplayControlProtocol:class {
         /// 二屏mainview
     var secondScreenView:UIView?{get set}
+    
     
     //MARK: - 将来抽成SDK要考虑是否变成optional
     func confirm()//用户按了确认键
@@ -75,7 +74,7 @@ public class ExControlCenter {
     //MARK:- 公有变量
     //MARK: Focus
         /// 是否显示焦点，默认显示
-    public var focusHidden:Bool = false {
+    public var focusHidden:Bool = true {
         didSet {
             //TODO: 隐藏或者显示焦点
         }
@@ -90,13 +89,14 @@ public class ExControlCenter {
     }
     //MARK: BLE:探测到的可用外设列表
     public var availablePeripherals:NSMutableArray = []
-    /// Ble与手机的连接状态
+    /// Ble与手机的连接状态，默认断开
     public var bleConnectionState:ExBleConnectionState = .disconnected
-    /// 手机的蓝牙状态
+    /// 手机的蓝牙状态，默认不可用
     public var localBleState:ExLocalBleState = .unavailabel
         /// 显示层代理
     public weak var displayControlDelegate:ExDisplayControlProtocol?
-    //MARK:- 私有方法
+    
+            //MARK:- 私有方法
     
     //MARK:- 公有方法
     /**
@@ -118,8 +118,9 @@ public class ExControlCenter {
     /**
      连接指定BLE设备，待商榷
      */
-    public func connectToPeripheral(){
+    public func connectToPeripheral() -> Bool{
         //TODO:连接指定BLE设备
+        return true
     
     }
     
@@ -128,42 +129,42 @@ public class ExControlCenter {
      遥控器向上
      */
     public func performUp(){
-        if !focusHidden {
-            focusManager.lookup_Up()
-        }
+        
+        focusManager.lookup_Up()
+        
     }
     /**
      遥控器向左
      */
     public func performLeft(){
-        if !focusHidden {
-            focusManager.lookup_Left()
-        }
+        
+        focusManager.lookup_Left()
+        
     }
     /**
      遥控器向右
      */
     public func performRight(){
-        if !focusHidden {
-            focusManager.lookup_Right()
-        }
+        
+        focusManager.lookup_Right()
+        
     }
     /**
      遥控器向下
      */
     public func performDown(){
-        if !focusHidden {
-            focusManager.lookup_Down()
-        }
+        
+        focusManager.lookup_Down()
+        
     }
     /**
      点击确认按钮
      */
     public func confirm() {
         
-        if !focusHidden {
-            displayControlDelegate?.confirm()
-        }
+    
+        displayControlDelegate?.confirm()
+        
         
     }
     
@@ -183,7 +184,7 @@ public class ExControlCenter {
      */
     public func setFocusForView(view:UIView?){
         
-        if view != nil && !focusHidden{
+        if view != nil{
             focusManager.setFocusForView(view)
         }
     }

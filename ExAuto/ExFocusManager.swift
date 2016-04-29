@@ -36,37 +36,71 @@ class ExFocusManager {
     }
     
     /**
-     选择了view
+     focus移动到指定view上
      
      - parameter view: 选择了的view
      */
     func setFocusForView(view:UIView?) {
-        let delegateView = ExControlCenter.sharedInstance()?.displayControlDelegate?.secondScreenView
-        if delegateView != nil {//当前有整体视图
-            delegateView!.bringSubviewToFront(focusView)
-            if currentItem != view && currentItem != nil && view != nil {//确实选了另外一个
-                let originalFrame = currentItem!.frame
-                let finalFrame = view!.frame
-                UIView.animateWithDuration(0.3, animations: {
-                    self.focusView.frame = originalFrame
-                    self.focusView.frame = finalFrame
-                    }, completion: { (complete) in
-                        if(complete){
-                            self.currentItem = view
-                        }
-                })
-                
-            }else if nil == currentItem && nil != view{//当前没有选定的
-                UIView.animateWithDuration(0.3, animations: {
-                    self.focusView.frame = view!.frame
-                    }, completion: { (complete) in
-                        if(complete){
-                            self.currentItem = view
-                        }
-                })
-            }
+        
+        if view != nil && view != currentItem {
+            let delegateView = ExControlCenter.sharedInstance()?.displayControlDelegate?.secondScreenView
             
+            if delegateView != nil {//当前有整体视图
+                //把focus放在最上层
+                if focusView.superview == delegateView! {//focus已加入delegateview
+                    delegateView!.bringSubviewToFront(focusView)
+                }else{
+                    delegateView!.addSubview(focusView)
+                }
+                
+                if !ExControlCenter.sharedInstance()!.focusHidden {//focus没被隐藏
+                    moveFocusWithAnimation(view!)
+                }else{//focus已经隐藏了
+                    moveFocusWithoutAnimation(view!)
+                    
+                }
+            }
+
         }
+    }
+    /**
+     带动画的移动焦点
+     
+     - parameter view: 要移动到的view
+     */
+    func moveFocusWithAnimation(view:UIView){
+        if currentItem != nil {//确实选了另外一个
+            let originalFrame = currentItem!.frame
+            let finalFrame = view.frame
+            UIView.animateWithDuration(0.3, animations: {
+                self.focusView.frame = originalFrame
+                self.focusView.frame = finalFrame
+                }, completion: { (complete) in
+                    if(complete){
+                        self.currentItem = view
+                    }
+            })
+            
+        }else if nil == currentItem{//当前没有选定的
+            UIView.animateWithDuration(0.3, animations: {
+                self.focusView.frame = view.frame
+                }, completion: { (complete) in
+                    if(complete){
+                        self.currentItem = view
+                    }
+            })
+        }
+
+    }
+    /**
+     不带动画的移动焦点
+     
+     - parameter view: 要移动到的view
+     */
+    func moveFocusWithoutAnimation(view:UIView){
+        
+        focusView.frame = view.frame
+        currentItem = view
     }
     /**
      向上查找
