@@ -8,7 +8,6 @@
 
 import UIKit
 
-let btnCornerRadius:CGFloat = 8 //这个成员将来要删掉，临时加上它
 
 class ExFocusManager {
     
@@ -29,7 +28,7 @@ class ExFocusManager {
     private func setupFocusView() {
         
         focusView.backgroundColor = UIColor.clearColor()
-        focusView.layer.cornerRadius = btnCornerRadius
+        focusView.layer.cornerRadius = 8
         focusView.layer.borderWidth = 4
         focusView.layer.borderColor = UIColor.orangeColor().CGColor
         
@@ -43,14 +42,13 @@ class ExFocusManager {
     func setFocusForView(view:UIView?) {
         
         if view != nil && view != currentItem {
-            let delegateView = ExControlCenter.sharedInstance()?.displayControlDelegate?.secondScreenView
             
-            if delegateView != nil {//当前有整体视图
+            if let delegateView = ExControlCenter.sharedInstance()?.displayControlDelegate?.secondScreenView {//当前有整体视图
                 //把focus放在最上层
-                if focusView.superview == delegateView! {//focus已加入delegateview
-                    delegateView!.bringSubviewToFront(focusView)
+                if focusView.superview == delegateView {//focus已加入delegateview
+                    delegateView.bringSubviewToFront(focusView)
                 }else{
-                    delegateView!.addSubview(focusView)
+                    delegateView.addSubview(focusView)
                 }
                 
                 if !ExControlCenter.sharedInstance()!.focusHidden {//focus没被隐藏
@@ -105,7 +103,7 @@ class ExFocusManager {
     /**
      向上查找
      */
-     func lookup_Up() {
+    func lookup_Up() {
         let items = ExControlCenter.sharedInstance()?.displayControlDelegate?.secondScreenView?.subviews
         if nil != items {//当前有选中项
             //搜索策略：首先查找垂直最短间距；如果最短间距有多个，则选择水平最短间距那个控件作为查找对象
@@ -138,6 +136,7 @@ class ExFocusManager {
             }
             
         }
+
     }
     /**
      向左查找

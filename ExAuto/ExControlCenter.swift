@@ -9,19 +9,17 @@
 import UIKit
 
 /// 显示层代理需要遵循的协议
-public protocol ExDisplayControlProtocol:class {
+@objc public protocol ExDisplayControlProtocol:class {
         /// 二屏mainview
     var secondScreenView:UIView?{get set}
     
-    
-    //MARK: - 将来抽成SDK要考虑是否变成optional
-    func confirm()//用户按了确认键
-    func back()//用户按了back键
-    func voiceChange(voiceAmountScale:Float)//音量改变
-    func showMenu()//显示菜单
-    func hideMenu()//收起菜单
-    func showSiri()//显示语音界面
-    func hideSiri()//收起语音界面
+    optional func confirm()//用户按了确认键
+    optional func back()//用户按了back键
+    optional func voiceChange(voiceAmountScale:Float)//音量改变
+    optional func showMenu()//显示菜单
+    optional func hideMenu()//收起菜单
+    optional func showSiri()//显示语音界面
+    optional func hideSiri()//收起语音界面
 }
 
 /**
@@ -163,7 +161,7 @@ public class ExControlCenter {
     public func confirm() {
         
     
-        displayControlDelegate?.confirm()
+        displayControlDelegate?.confirm?()
         
         
     }
@@ -174,7 +172,7 @@ public class ExControlCenter {
     public func back(){
         
         if !focusHidden {
-            displayControlDelegate?.back()
+            displayControlDelegate?.back?()
         }
     }
     /**
@@ -192,13 +190,13 @@ public class ExControlCenter {
      打开菜单
      */
     public func showMenu(){
-        displayControlDelegate?.showMenu()
+        displayControlDelegate?.showMenu?()
     }
     /**
      关闭菜单
      */
     public func hideMenu(){
-        displayControlDelegate?.hideMenu()
+        displayControlDelegate?.hideMenu?()
     }
     /**
      音量调整
@@ -207,7 +205,7 @@ public class ExControlCenter {
      */
     public func voiceChange(voiceAmoutScale:Float){
 
-        displayControlDelegate?.voiceChange(voiceAmoutScale)
+        displayControlDelegate?.voiceChange?(voiceAmoutScale)
     }
     
     //MARK:语音指令
@@ -223,13 +221,13 @@ public class ExControlCenter {
      开启语音
      */
     public func openVR(){
-        displayControlDelegate?.showSiri()
+        displayControlDelegate?.showSiri?()
     }
     /**
      关闭语音
      */
     public func closeVR(){
-        displayControlDelegate?.hideSiri()
+        displayControlDelegate?.hideSiri?()
     }
 
 }
