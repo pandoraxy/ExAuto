@@ -9,14 +9,15 @@
 import UIKit
 import CoreBluetooth
 
-protocol BLECentralDelegate: NSObjectProtocol{
+public protocol BLECentralDelegate: NSObjectProtocol{
     //    func didDiscoverConnection(connection: BLEConnection)
     //    func didConnectConnection(connection: BLEConnection)
+    //Mark:CC中实现
     func didUpdataValue(Central:EXBLECentralManager,value:NSString)
     func getConnetStateString(errorString:connectState) -> connectState
 }
 
-class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
+public class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     let characteristicUUIDString = "DABCAF22-9D34-4C8C-9EC6-D7DB80E89788"
     let seviceUUID = "3E4EA42A-AF5D-4D6A-8ABE-A29935B5EA8C"
@@ -45,7 +46,7 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     }
     
     // MARK: CBCentralManagerDelegate
-    func centralManagerDidUpdateState(central: CBCentralManager) {
+    public func centralManagerDidUpdateState(central: CBCentralManager) {
         
         switch central.state{
         case CBCentralManagerState.PoweredOn:
@@ -66,7 +67,7 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         self.delegate?.getConnetStateString(errorString)
     }
     
-    func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
+    public func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
         print("didDiscoverPeripheral");
         self.errorString = connectState.connecting
         self.delegate?.getConnetStateString(errorString)
@@ -76,14 +77,14 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         self.manager.stopScan()
     }
     
-    func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
+    public func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
         self.errorString = connectState.connected
         self.delegate?.getConnetStateString(errorString)
         self.peripheral.discoverServices([self.serviceUUIDs])
     }
     
     // MARK: CBPeripheralDelegate
-    func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
+    public func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
         if error != nil {
             return
         }
@@ -95,7 +96,7 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
     }
     
-    func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
+    public func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
         if error != nil {
             return
         }
@@ -107,7 +108,7 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
     }
     
-    func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
+    public func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         if error != nil {
             return
         }
@@ -125,6 +126,147 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         
     }
 }
+
+public protocol CBPeripheralServerDelegate:NSObjectProtocol{
+    
+    //Mark:暂时用不到 用于中心给外设传值
+    func peripheralServer(peripheral:EXBLEPeripheralManager, centralDidSubscribe central:CBCentral)
+    func peripheralServer(peripheral:EXBLEPeripheralManager, centralDidUnsubscribe central:CBCentral)
+    
+}
+
+public class EXBLEPeripheralManager: NSObject,CBPeripheralManagerDelegate {
+    
+    let characteristicUUIDString = "DABCAF22-9D34-4C8C-9EC6-D7DB80E89788"
+    let seviceUUID = "3E4EA42A-AF5D-4D6A-8ABE-A29935B5EA8C"
+    var errorString:NSString!
+    var connection:NSString!
+    var serviceName:NSString!
+    var pendingData:NSData!
+    
+    var serviceUUID : CBUUID!
+    var characteristicUUID : CBUUID!
+    
+    var manager : CBPeripheralManager!
+    var service : CBMutableService!
+    var characteristic : CBMutableCharacteristic!
+    var data : NSData!
+    
+    weak var delegate:CBPeripheralServerDelegate?
+    
+    //super override
+    override init() {
+        super.init()
+        self.manager = CBPeripheralManager(delegate: self, queue: nil, options: nil)
+    }
+    init(delegate: CBPeripheralManagerDelegate?,queue:dispatch_queue_t?,options:[String : AnyObject]?) {
+        super.init()
+        self.manager = CBPeripheralManager(delegate: delegate, queue: queue, options: options)
+    }
+    
+    func sendToSubcribers(data:NSData){
+        if self.manager.state == CBPeripheralManagerState.PoweredOn{
+            let isSuccess = self.manager.updateValue(data, forCharacteristic: self.characteristic, onSubscribedCentrals: nil)
+            if !isSuccess {
+                self.pendingData = data;
+            }
+        }
+    }
+    
+    //  MARK:广播
+    func startAdvertisingING(){
+        if self.manager.isAdvertising {
+            self.manager.stopAdvertising()
+        }
+        self.manager.startAdvertising([CBAdvertisementDataServiceUUIDsKey : [self.service.UUID]])
+    }
+    
+    func stopAdvertising() {
+        self.manager.stopAdvertising()
+    }
+    
+    func isAdvertising() -> Bool {
+        return self.manager.isAdvertising
+    }
+    
+    
+    //  MARK:peripheralManageDelegate
+    public func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager) {
+        if peripheral.state != CBPeripheralManagerState.PoweredOn {
+            return
+        }
+        self.characteristicUUID = CBUUID(string:characteristicUUIDString)
+        self.serviceUUID = CBUUID(string: seviceUUID)
+        
+        self.characteristic = CBMutableCharacteristic(type: characteristicUUID, properties: CBCharacteristicProperties.Notify, value: nil, permissions: CBAttributePermissions.Readable)
+        self.service = CBMutableService(type: self.serviceUUID, primary:true)
+        self.service.characteristics = [self.characteristic!]
+        
+        self.manager.addService(self.service)
+    }
+    
+    public func peripheralManager(peripheral: CBPeripheralManager, didAddService service: CBService, error: NSError?) {
+        if (error != nil) {
+            errorString = error?.localizedDescription
+        }
+        self.startAdvertisingING()
+    }
+    
+    public func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager, error: NSError?) {
+        if (error != nil) {
+            errorString = error?.localizedDescription
+            print("startAdvertising \(errorString)")
+        }
+    }
+    public func peripheralManager(peripheral: CBPeripheralManager, central: CBCentral, didSubscribeToCharacteristic characteristic: CBCharacteristic) {
+        self.delegate?.peripheralServer(self, centralDidSubscribe: central)
+    }
+    
+    public func peripheralManager(peripheral: CBPeripheralManager, central: CBCentral, didUnsubscribeFromCharacteristic characteristic: CBCharacteristic) {
+        self.delegate?.peripheralServer(self, centralDidUnsubscribe: central)
+    }
+    
+    public func peripheralManagerIsReadyToUpdateSubscribers(peripheral: CBPeripheralManager) {
+        if (self.pendingData != nil) {
+            let data = self.pendingData.copy();
+            self.pendingData = nil
+            self.sendToSubcribers(data as! NSData)
+        }
+    }
+    
+    //MARK:后期实现
+    public func peripheralManager(peripheral: CBPeripheralManager, didReceiveReadRequest request: CBATTRequest) {
+        
+    }
+    public func peripheralManager(peripheral: CBPeripheralManager, didReceiveWriteRequests requests: [CBATTRequest]) {
+        
+    }
+    
+}
+
+public enum RemoteEnum:NSInteger {
+    case up = 200//上
+    case left//左
+    case down//下
+    case right//右
+    case enter//确认
+    case plus//音量增大
+    case dec//音量减小
+    case voice//语音
+    case menu//菜单
+    case back//返回
+}
+
+public enum connectState:NSString{
+    case scan
+    case connecting;
+    case connected;
+    case poweredOn
+    case poweredOff
+    case unauthorized
+}
+
+
 
 
 

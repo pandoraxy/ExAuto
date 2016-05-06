@@ -10,8 +10,6 @@
 		92AD8E881CBB40C900C6EF14 /* ExAuto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92AD8E7D1CBB40C900C6EF14 /* ExAuto.framework */; };
 		92AD8E8D1CBB40C900C6EF14 /* ExAutoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92AD8E8C1CBB40C900C6EF14 /* ExAutoTests.swift */; };
 		A230DD6D1CDC3FD20041FBDE /* EXBLECentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A230DD6B1CDC3FD20041FBDE /* EXBLECentralManager.swift */; };
-		A230DD6E1CDC3FD20041FBDE /* EXBLEPeripheralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A230DD6C1CDC3FD20041FBDE /* EXBLEPeripheralManager.swift */; };
-		A28A18001CDC76B100FBFFBD /* RemoteEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28A17FF1CDC76B100FBFFBD /* RemoteEnum.swift */; };
 		AAD7762C1CBDF280008147C6 /* Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD7762B1CBDF280008147C6 /* Demo.swift */; };
 		F4388D3D1CC7333B002D8760 /* ExFocusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4388D3C1CC7333B002D8760 /* ExFocusManager.swift */; };
 		F4BF29101CC77679005A1C4E /* ExControlCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BF290F1CC77679005A1C4E /* ExControlCenter.swift */; };
@@ -34,8 +32,6 @@
 		92AD8E8C1CBB40C900C6EF14 /* ExAutoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExAutoTests.swift; sourceTree = "<group>"; };
 		92AD8E8E1CBB40C900C6EF14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A230DD6B1CDC3FD20041FBDE /* EXBLECentralManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EXBLECentralManager.swift; sourceTree = "<group>"; };
-		A230DD6C1CDC3FD20041FBDE /* EXBLEPeripheralManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EXBLEPeripheralManager.swift; sourceTree = "<group>"; };
-		A28A17FF1CDC76B100FBFFBD /* RemoteEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteEnum.swift; sourceTree = "<group>"; };
 		AAD7762B1CBDF280008147C6 /* Demo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Demo.swift; sourceTree = "<group>"; };
 		F4388D3C1CC7333B002D8760 /* ExFocusManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExFocusManager.swift; sourceTree = "<group>"; };
 		F4BF290F1CC77679005A1C4E /* ExControlCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExControlCenter.swift; sourceTree = "<group>"; };
@@ -86,8 +82,6 @@
 				AAD7762B1CBDF280008147C6 /* Demo.swift */,
 				F4BF290F1CC77679005A1C4E /* ExControlCenter.swift */,
 				A230DD6B1CDC3FD20041FBDE /* EXBLECentralManager.swift */,
-				A230DD6C1CDC3FD20041FBDE /* EXBLEPeripheralManager.swift */,
-				A28A17FF1CDC76B100FBFFBD /* RemoteEnum.swift */,
 			);
 			path = ExAuto;
 			sourceTree = "<group>";
@@ -208,9 +202,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A230DD6E1CDC3FD20041FBDE /* EXBLEPeripheralManager.swift in Sources */,
 				A230DD6D1CDC3FD20041FBDE /* EXBLECentralManager.swift in Sources */,
-				A28A18001CDC76B100FBFFBD /* RemoteEnum.swift in Sources */,
 				AAD7762C1CBDF280008147C6 /* Demo.swift in Sources */,
 				F4BF29101CC77679005A1C4E /* ExControlCenter.swift in Sources */,
 				F4388D3D1CC7333B002D8760 /* ExFocusManager.swift in Sources */,
