@@ -10,12 +10,13 @@ import UIKit
 import CoreBluetooth
 
 protocol BLECentralDelegate: NSObjectProtocol{
-//    func didDiscoverConnection(connection: BLEConnection)
-//    func didConnectConnection(connection: BLEConnection)
+    //    func didDiscoverConnection(connection: BLEConnection)
+    //    func didConnectConnection(connection: BLEConnection)
+    func didUpdataValue(Central:EXBLECentralManager,value:NSString)
 }
 
 class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
-
+    
     let characteristicUUIDString = "DABCAF22-9D34-4C8C-9EC6-D7DB80E89788"
     let seviceUUID = "3E4EA42A-AF5D-4D6A-8ABE-A29935B5EA8C"
     
@@ -26,14 +27,12 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     var peripheral : CBPeripheral!
     weak var delegate: BLECentralDelegate!
     
-//    self.characteristicUUID = CBUUID(string:characteristicUUIDString)
-//    self.serviceUUID = CBUUID(string: seviceUUID)
-    
     init(delegate:BLECentralDelegate) {
         super.init()
         self.manager = CBCentralManager(delegate: self, queue: nil)
     }
     
+    //MARK:扫描
     func startScan() {
         if self.manager.state == CBCentralManagerState.PoweredOn {
             self.manager.scanForPeripheralsWithServices([self.serviceUUIDs], options: nil)
@@ -43,17 +42,12 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         self.manager.stopScan()
     }
     
-    func connect() {
-        
-    }
-    
-    func disconnect() {
-    
-    }
-    
+    // MARK: CBCentralManagerDelegate
     func centralManagerDidUpdateState(central: CBCentralManager) {
         switch central.state{
         case CBCentralManagerState.PoweredOn:
+            self.characteristicsUUIDs = CBUUID(string:characteristicUUIDString)
+            self.serviceUUIDs = CBUUID(string: seviceUUID)
             self.manager.scanForPeripheralsWithServices([self.serviceUUIDs], options: nil)
             print("Bluetooth is currently powered on and available to use.")
         case CBCentralManagerState.PoweredOff:
@@ -108,6 +102,16 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
         let data = NSString(data: characteristic.value!, encoding: NSUTF8StringEncoding)
         print("data is \(data)");
+        self.delegate?.didUpdataValue(self, value: data!)
+    }
+    
+    //MARK:连接  后期实现，找到多个设备以后选择连接
+    func connect() {
+        
+    }
+    
+    func disconnect() {
+        
     }
 }
 
