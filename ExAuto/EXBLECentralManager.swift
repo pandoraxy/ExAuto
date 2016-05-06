@@ -13,6 +13,7 @@ protocol BLECentralDelegate: NSObjectProtocol{
     //    func didDiscoverConnection(connection: BLEConnection)
     //    func didConnectConnection(connection: BLEConnection)
     func didUpdataValue(Central:EXBLECentralManager,value:NSString)
+    func getConnetStateString(errorString:connectState) -> connectState
 }
 
 class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
@@ -25,6 +26,7 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     var characteristicsUUIDs : CBUUID!
     var data:NSMutableData!
     var peripheral : CBPeripheral!
+    var errorString:connectState!
     weak var delegate: BLECentralDelegate!
     
     init(delegate:BLECentralDelegate) {
@@ -44,23 +46,30 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     
     // MARK: CBCentralManagerDelegate
     func centralManagerDidUpdateState(central: CBCentralManager) {
+        
         switch central.state{
         case CBCentralManagerState.PoweredOn:
             self.characteristicsUUIDs = CBUUID(string:characteristicUUIDString)
             self.serviceUUIDs = CBUUID(string: seviceUUID)
             self.manager.scanForPeripheralsWithServices([self.serviceUUIDs], options: nil)
+            self.errorString = connectState.poweredOn
             print("Bluetooth is currently powered on and available to use.")
         case CBCentralManagerState.PoweredOff:
+            self.errorString = connectState.poweredOff
             print("Bluetooth is currently powered off.")
         case CBCentralManagerState.Unauthorized:
+            self.errorString = connectState.unauthorized
             print("The app is not authorized to use Bluetooth low energy.")
         default:
             print("centralManagerDidUpdateState: \(central.state)")
         }
+        self.delegate?.getConnetStateString(errorString)
     }
     
     func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
         print("didDiscoverPeripheral");
+        self.errorString = connectState.connecting
+        self.delegate?.getConnetStateString(errorString)
         self.peripheral = peripheral
         self.peripheral.delegate = self;
         self.manager.connectPeripheral(peripheral, options: nil)
@@ -68,6 +77,8 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     }
     
     func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
+        self.errorString = connectState.connected
+        self.delegate?.getConnetStateString(errorString)
         self.peripheral.discoverServices([self.serviceUUIDs])
     }
     
