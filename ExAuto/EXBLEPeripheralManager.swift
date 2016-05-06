@@ -11,14 +11,14 @@ import CoreBluetooth
 
 protocol CBPeripheralServerDelegate:NSObjectProtocol{
     
+    //Mark:暂时用不到 用于中心给外设传值
     func peripheralServer(peripheral:EXBLEPeripheralManager, centralDidSubscribe central:CBCentral)
     func peripheralServer(peripheral:EXBLEPeripheralManager, centralDidUnsubscribe central:CBCentral)
     
 }
 
 class EXBLEPeripheralManager: NSObject,CBPeripheralManagerDelegate {
-//    private var peripheralManager:CBPeripheralManager!
-//    private var transferCharacteristic:CBMutableCharacteristic!
+    
     let characteristicUUIDString = "DABCAF22-9D34-4C8C-9EC6-D7DB80E89788"
     let seviceUUID = "3E4EA42A-AF5D-4D6A-8ABE-A29935B5EA8C"
     var errorString:NSString!
@@ -34,12 +34,7 @@ class EXBLEPeripheralManager: NSObject,CBPeripheralManagerDelegate {
     var characteristic : CBMutableCharacteristic!
     var data : NSData!
     
-    
     weak var delegate:CBPeripheralServerDelegate?
-    
-//    var serviceName:NSString
-//    var serviceUUIDs:CBUUID
-//    var characteristicUUIDs:CBUUID
     
     //super override
     override init() {
@@ -57,11 +52,10 @@ class EXBLEPeripheralManager: NSObject,CBPeripheralManagerDelegate {
             if !isSuccess {
                 self.pendingData = data;
             }
-            
         }
     }
-   
-//  MARK:广播
+    
+    //  MARK:广播
     func startAdvertisingING(){
         if self.manager.isAdvertising {
             self.manager.stopAdvertising()
@@ -78,7 +72,7 @@ class EXBLEPeripheralManager: NSObject,CBPeripheralManagerDelegate {
     }
     
     
-//  MARK:peripheralManageDelegate
+    //  MARK:peripheralManageDelegate
     func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager) {
         if peripheral.state != CBPeripheralManagerState.PoweredOn {
             return
@@ -101,14 +95,11 @@ class EXBLEPeripheralManager: NSObject,CBPeripheralManagerDelegate {
     }
     
     func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager, error: NSError?) {
-        
         if (error != nil) {
             errorString = error?.localizedDescription
             print("startAdvertising \(errorString)")
         }
-        
     }
-    
     func peripheralManager(peripheral: CBPeripheralManager, central: CBCentral, didSubscribeToCharacteristic characteristic: CBCharacteristic) {
         self.delegate?.peripheralServer(self, centralDidSubscribe: central)
     }
@@ -125,13 +116,14 @@ class EXBLEPeripheralManager: NSObject,CBPeripheralManagerDelegate {
         }
     }
     
+    //MARK:后期实现
     func peripheralManager(peripheral: CBPeripheralManager, didReceiveReadRequest request: CBATTRequest) {
         
     }
     func peripheralManager(peripheral: CBPeripheralManager, didReceiveWriteRequests requests: [CBATTRequest]) {
         
     }
-
+    
 }
 
 

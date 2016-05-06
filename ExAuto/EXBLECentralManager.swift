@@ -10,12 +10,14 @@ import UIKit
 import CoreBluetooth
 
 protocol BLECentralDelegate: NSObjectProtocol{
-//    func didDiscoverConnection(connection: BLEConnection)
-//    func didConnectConnection(connection: BLEConnection)
+    //    func didDiscoverConnection(connection: BLEConnection)
+    //    func didConnectConnection(connection: BLEConnection)
+    func didUpdataValue(Central:EXBLECentralManager,value:NSString)
+    func getConnetStateString(errorString:connectState) -> connectState
 }
 
 class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
-
+    
     let characteristicUUIDString = "DABCAF22-9D34-4C8C-9EC6-D7DB80E89788"
     let seviceUUID = "3E4EA42A-AF5D-4D6A-8ABE-A29935B5EA8C"
     
@@ -24,16 +26,15 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     var characteristicsUUIDs : CBUUID!
     var data:NSMutableData!
     var peripheral : CBPeripheral!
+    var errorString:connectState!
     weak var delegate: BLECentralDelegate!
-    
-//    self.characteristicUUID = CBUUID(string:characteristicUUIDString)
-//    self.serviceUUID = CBUUID(string: seviceUUID)
     
     init(delegate:BLECentralDelegate) {
         super.init()
         self.manager = CBCentralManager(delegate: self, queue: nil)
     }
     
+    //MARK:扫描
     func startScan() {
         if self.manager.state == CBCentralManagerState.PoweredOn {
             self.manager.scanForPeripheralsWithServices([self.serviceUUIDs], options: nil)
@@ -43,30 +44,32 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         self.manager.stopScan()
     }
     
-    func connect() {
-        
-    }
-    
-    func disconnect() {
-    
-    }
-    
+    // MARK: CBCentralManagerDelegate
     func centralManagerDidUpdateState(central: CBCentralManager) {
+        
         switch central.state{
         case CBCentralManagerState.PoweredOn:
+            self.characteristicsUUIDs = CBUUID(string:characteristicUUIDString)
+            self.serviceUUIDs = CBUUID(string: seviceUUID)
             self.manager.scanForPeripheralsWithServices([self.serviceUUIDs], options: nil)
+            self.errorString = connectState.poweredOn
             print("Bluetooth is currently powered on and available to use.")
         case CBCentralManagerState.PoweredOff:
+            self.errorString = connectState.poweredOff
             print("Bluetooth is currently powered off.")
         case CBCentralManagerState.Unauthorized:
+            self.errorString = connectState.unauthorized
             print("The app is not authorized to use Bluetooth low energy.")
         default:
             print("centralManagerDidUpdateState: \(central.state)")
         }
+        self.delegate?.getConnetStateString(errorString)
     }
     
     func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
         print("didDiscoverPeripheral");
+        self.errorString = connectState.connecting
+        self.delegate?.getConnetStateString(errorString)
         self.peripheral = peripheral
         self.peripheral.delegate = self;
         self.manager.connectPeripheral(peripheral, options: nil)
@@ -74,6 +77,8 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
     }
     
     func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
+        self.errorString = connectState.connected
+        self.delegate?.getConnetStateString(errorString)
         self.peripheral.discoverServices([self.serviceUUIDs])
     }
     
@@ -108,6 +113,16 @@ class EXBLECentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDeleg
         }
         let data = NSString(data: characteristic.value!, encoding: NSUTF8StringEncoding)
         print("data is \(data)");
+        self.delegate?.didUpdataValue(self, value: data!)
+    }
+    
+    //MARK:连接  后期实现，找到多个设备以后选择连接
+    func connect() {
+        
+    }
+    
+    func disconnect() {
+        
     }
 }
 
