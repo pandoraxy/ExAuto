@@ -76,6 +76,7 @@
 				F4388D3C1CC7333B002D8760 /* ExFocusManager.swift */,
 				92AD8E821CBB40C900C6EF14 /* Info.plist */,
 				F4BF290F1CC77679005A1C4E /* ExControlCenter.swift */,
+				A230DD6B1CDC3FD20041FBDE /* EXBLECentralManager.swift */,
 			);
 			path = ExAuto;
 			sourceTree = "<group>";
