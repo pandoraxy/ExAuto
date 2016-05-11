@@ -8,21 +8,16 @@
 
 import UIKit
 
-public let notiName = "Notification"
-public let userInfoKey = "order"
 /// 显示层代理需要遵循的协议
-public protocol ExDisplayControlProtocol:class {
-        /// 二屏mainview
-    var secondScreenView:UIView?{get set}
+@objc public protocol ExDisplayControlProtocol:class {
     
-    //MARK: - 将来抽成SDK要考虑是否变成optional
-    func confirm()//用户按了确认键
-    func back()//用户按了back键
-    func voiceChange(voiceAmountScale:Float)//音量改变
-    func showMenu()//显示菜单
-    func hideMenu()//收起菜单
-    func showSiri()//显示语音界面
-    func hideSiri()//收起语音界面
+    optional func confirm()//用户按了确认键
+    optional func back()//用户按了back键
+    optional func voiceChange(voiceAmountScale:Float)//音量改变
+    optional func showMenu()//显示菜单
+    optional func hideMenu()//收起菜单
+    optional func showSiri()//显示语音界面
+    optional func hideSiri()//收起语音界面
 }
 
 /**
@@ -62,24 +57,18 @@ public enum ExVROrder {
     case telOrder
 }
 /// 控制中心类
-public class ExControlCenter {
+public class ExControlCenter:NSObject,ExFocusDelegate {
     
     //MARK:- 私有变量
         /// CC单例
     private static var singleton:ExControlCenter?
-    
         /// 焦点控制
-    lazy private var focusManager = ExFocusManager.init()
-
+    private var focusManager:ExFocusManager = ExFocusManager.sharedInstance()
     
     //MARK:- 公有变量
-    //MARK: Focus
+    
         /// 是否显示焦点，默认显示
-    public var focusHidden:Bool = false {
-        didSet {
-            //TODO: 隐藏或者显示焦点
-        }
-    }
+    public var focusHidden:Bool = false
     /**
      当前焦点所在的view上(readonly)
      */
@@ -88,15 +77,16 @@ public class ExControlCenter {
             return focusManager.currentItem
         }
     }
-    //MARK: BLE:探测到的可用外设列表
-    public var availablePeripherals:NSMutableArray = []
-    /// Ble与手机的连接状态
-    public var bleConnectionState:ExBleConnectionState = .disconnected
-    /// 手机的蓝牙状态
-    public var localBleState:ExLocalBleState = .unavailabel
+        /// 焦点视图
+    public var focus:UIView{
+        get {
+            return focusManager.focusView
+        }
+    }
         /// 显示层代理
     public weak var displayControlDelegate:ExDisplayControlProtocol?
-    //MARK:- 私有方法
+    
+    
     
     //MARK:- 公有方法
     /**
@@ -110,60 +100,62 @@ public class ExControlCenter {
             
             singleton = ExControlCenter()
             
+            
         }
         return singleton
     }
     
-    //MARK:- BLE方面的方法
-    /**
-     连接指定BLE设备，待商榷
-     */
-    public func connectToPeripheral(){
-        //TODO:连接指定BLE设备
-    
+    private override init() {
+        super.init()
+        focusManager.focusDelegate = self
+    }
+    //MARK: ExFocusDelegate
+    public func focus(focus: UIView, didSelectView view: UIView) {
+        
+        //TODO:选中焦点
+        
     }
     
-    //MARK:要交给DC处理的action
+    //MARK:要交给DC处理的action,block部分可以为nil
     /**
      遥控器向上
      */
     public func performUp(){
-        if !focusHidden {
-            focusManager.lookup_Up()
-        }
+        
+        focusManager.lookup_Up(animated: true)
+
+        
     }
     /**
      遥控器向左
      */
     public func performLeft(){
-        if !focusHidden {
-            focusManager.lookup_Left()
-        }
+        
+        focusManager.lookup_Left(animated: true)
     }
     /**
      遥控器向右
      */
     public func performRight(){
-        if !focusHidden {
-            focusManager.lookup_Right()
-        }
+        
+        focusManager.lookup_Right(animated: true)
+        
     }
     /**
      遥控器向下
      */
     public func performDown(){
-        if !focusHidden {
-            focusManager.lookup_Down()
-        }
+        
+        
+        focusManager.lookup_Down(animated: true)
+        
     }
     /**
      点击确认按钮
      */
     public func confirm() {
-        
-        if !focusHidden {
-            displayControlDelegate?.confirm()
-        }
+
+        displayControlDelegate?.confirm?()
         
     }
     
@@ -171,10 +163,8 @@ public class ExControlCenter {
      返回
      */
     public func back(){
+        displayControlDelegate?.back?()
         
-        if !focusHidden {
-            displayControlDelegate?.back()
-        }
     }
     /**
      指定焦点到view上
@@ -183,21 +173,23 @@ public class ExControlCenter {
      */
     public func setFocusForView(view:UIView?){
         
-        if view != nil && !focusHidden{
-            focusManager.setFocusForView(view)
+        if view != nil{
+
+            focusManager.setFocusForView(view!, withAnimated: true)
         }
     }
+    
     /**
      打开菜单
      */
     public func showMenu(){
-        displayControlDelegate?.showMenu()
+        displayControlDelegate?.showMenu?()
     }
     /**
      关闭菜单
      */
     public func hideMenu(){
-        displayControlDelegate?.hideMenu()
+        displayControlDelegate?.hideMenu?()
     }
     /**
      音量调整
@@ -206,7 +198,7 @@ public class ExControlCenter {
      */
     public func voiceChange(voiceAmoutScale:Float){
 
-        displayControlDelegate?.voiceChange(voiceAmoutScale)
+        displayControlDelegate?.voiceChange?(voiceAmoutScale)
     }
     
     //MARK:语音指令
@@ -222,13 +214,13 @@ public class ExControlCenter {
      开启语音
      */
     public func openVR(){
-        displayControlDelegate?.showSiri()
+        displayControlDelegate?.showSiri?()
     }
     /**
      关闭语音
      */
     public func closeVR(){
-        displayControlDelegate?.hideSiri()
+        displayControlDelegate?.hideSiri?()
     }
 
 }
