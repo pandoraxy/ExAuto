@@ -10,6 +10,7 @@
 		92AD8E881CBB40C900C6EF14 /* ExAuto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92AD8E7D1CBB40C900C6EF14 /* ExAuto.framework */; };
 		92AD8E8D1CBB40C900C6EF14 /* ExAutoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92AD8E8C1CBB40C900C6EF14 /* ExAutoTests.swift */; };
 		F4388D3D1CC7333B002D8760 /* ExFocusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4388D3C1CC7333B002D8760 /* ExFocusManager.swift */; };
+		F44544921CE301EC00F59869 /* EXBLECentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44544911CE301EC00F59869 /* EXBLECentralManager.swift */; };
 		F4BF29101CC77679005A1C4E /* ExControlCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BF290F1CC77679005A1C4E /* ExControlCenter.swift */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,7 @@
 		92AD8E8C1CBB40C900C6EF14 /* ExAutoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExAutoTests.swift; sourceTree = "<group>"; };
 		92AD8E8E1CBB40C900C6EF14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4388D3C1CC7333B002D8760 /* ExFocusManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExFocusManager.swift; sourceTree = "<group>"; };
+		F44544911CE301EC00F59869 /* EXBLECentralManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EXBLECentralManager.swift; sourceTree = "<group>"; };
 		F4BF290F1CC77679005A1C4E /* ExControlCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExControlCenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,10 +75,10 @@
 		92AD8E7F1CBB40C900C6EF14 /* ExAuto */ = {
 			isa = PBXGroup;
 			children = (
+				F44544911CE301EC00F59869 /* EXBLECentralManager.swift */,
 				F4388D3C1CC7333B002D8760 /* ExFocusManager.swift */,
 				92AD8E821CBB40C900C6EF14 /* Info.plist */,
 				F4BF290F1CC77679005A1C4E /* ExControlCenter.swift */,
-				A230DD6B1CDC3FD20041FBDE /* EXBLECentralManager.swift */,
 			);
 			path = ExAuto;
 			sourceTree = "<group>";
@@ -198,6 +200,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4BF29101CC77679005A1C4E /* ExControlCenter.swift in Sources */,
+				F44544921CE301EC00F59869 /* EXBLECentralManager.swift in Sources */,
 				F4388D3D1CC7333B002D8760 /* ExFocusManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
